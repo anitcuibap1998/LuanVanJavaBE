@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,8 +23,11 @@ public class UserController {
 	private UserService userService ;
 	
 	@PostMapping(path="/getOne" ,consumes = "application/json", produces = "application/json")
-	public User getAll(@RequestBody User user) {
+	public User getAll(
+//			@RequestHeader("token") String token,
+			@RequestBody User user) {
 		//mã hóa MD5 pass
+//		System.out.println("mã token: "+token);
 		String hashpass=MD5.getMd5(user.getPass());
 		System.out.println(hashpass);
 		User user2= new User();
@@ -40,7 +44,8 @@ public class UserController {
 	}
 	
 	@GetMapping("/getAll")
-	public List<User> getAll() {
+	public List<User> getAll(@RequestHeader("token") String token) {
+		System.out.println(token);
 		System.out.println((List<User>) userService.findAll());
 		return (List<User>) userService.findAll();
 	}
