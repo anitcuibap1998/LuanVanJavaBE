@@ -26,7 +26,7 @@ public class UserController {
 	public User getAll(
 //			@RequestHeader("token") String token,
 			@RequestBody User user) {
-		//mã hóa MD5 pass
+		//mã hóa MD5 password
 //		System.out.println("mã token: "+token);
 		String hashpass=MD5.getMd5(user.getPass());
 		System.out.println(hashpass);
