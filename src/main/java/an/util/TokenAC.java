@@ -2,7 +2,9 @@ package an.util;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -12,10 +14,15 @@ import javax.crypto.spec.SecretKeySpec;
 
 import an.model.User;
 
-public class Token {
+public class TokenAC {
 	
 	public static String encodeToken(User user) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-		String original = user.getUsername()+","+user.getRole();
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		Date date = new Date();
+		System.out.println(formatter.format(date).toString());
+		
+		String original = user.getUsername()+","+user.getRole()+","+formatter.format(date).toString();
 		System.out.println("Chuoi Chua Ma Hoa: "+original);
 		String SECRET_KEY = "Anvietcodedao.vn";
 		SecretKeySpec skeySpec = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");

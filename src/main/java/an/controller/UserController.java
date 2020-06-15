@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import an.model.User;
 import an.service.UserService;
 import an.util.MD5;
-import an.util.Token;
+import an.util.TokenAC;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -57,14 +57,15 @@ public class UserController {
 		return (List<User>) userService.findAll();
 	}
 	@PostMapping(path="/login" ,consumes = "application/json", produces = "application/json")
-	public User getOneUserCustom(@RequestBody User user) {
+	public Object getOneUserCustom(@RequestBody User user) {
 		boolean flag = true;	
 		User getuser = userService.getOneUser(user.getUsername(), MD5.getMd5(user.getPass()));
-		if(user != null) {
+		System.out.println("---> "+getuser);
+		if(getuser !=null) {
 			//goi ham create token 
 			String token  ="";
 				try {
-					token = Token.encodeToken(user);
+					token = TokenAC.encodeToken(user);
 				} catch (InvalidKeyException e) {
 					flag = false;
 					e.printStackTrace();
@@ -82,12 +83,14 @@ public class UserController {
 					e.printStackTrace();
 				}
 				if(flag==true) {
-					
 					getuser.setToken(token);
 				}
-					return getuser;
-		}else {
-			return new User();
+		return getuser;
 		}
+		else{
+			return 404;
+		}
+		
+		
 	}
 }
