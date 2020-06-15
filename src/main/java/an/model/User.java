@@ -23,7 +23,7 @@ public class User {
 	private String first_name;
 	private String last_name;
 	private Date birth_day;
-	
+	private String token;
 
 	
 	public User() {
@@ -85,12 +85,30 @@ public class User {
 		this.birth_day = birth_day;
 	}
 
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", pass=" + pass + ", role=" + role + ", email=" + email
 				+ ", phone=" + phone + ", first_name=" + first_name + ", last_name=" + last_name + ", birth_day="
-				+ birth_day + "]";
+				+ birth_day + ", token=" + token + "]";
 	}
+
+	
 	
 	
 	

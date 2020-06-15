@@ -1,6 +1,12 @@
 package an.controller;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,9 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import an.model.User;
 import an.service.UserService;
 import an.util.MD5;
+import an.util.Token;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*")
 @RequestMapping("/user")
 public class UserController {
 	@Autowired
@@ -26,7 +33,7 @@ public class UserController {
 	public User getAll(
 //			@RequestHeader("token") String token,
 			@RequestBody User user) {
-		//mã hóa MD5 password
+		//mã hóa MD5 pass
 //		System.out.println("mã token: "+token);
 		String hashpass=MD5.getMd5(user.getPass());
 		System.out.println(hashpass);
@@ -48,5 +55,39 @@ public class UserController {
 		System.out.println(token);
 		System.out.println((List<User>) userService.findAll());
 		return (List<User>) userService.findAll();
+	}
+	@PostMapping(path="/login" ,consumes = "application/json", produces = "application/json")
+	public User getOneUserCustom(@RequestBody User user) {
+		boolean flag = true;	
+		User getuser = userService.getOneUser(user.getUsername(), MD5.getMd5(user.getPass()));
+		if(user != null) {
+			//goi ham create token 
+			String token  ="";
+				try {
+					token = Token.encodeToken(user);
+				} catch (InvalidKeyException e) {
+					flag = false;
+					e.printStackTrace();
+				} catch (NoSuchAlgorithmException e) {
+					flag = false;
+					e.printStackTrace();
+				} catch (NoSuchPaddingException e) {
+					flag = false;
+					e.printStackTrace();
+				} catch (IllegalBlockSizeException e) {
+					flag = false;
+					e.printStackTrace();
+				} catch (BadPaddingException e) {
+					flag = false;
+					e.printStackTrace();
+				}
+				if(flag==true) {
+					
+					getuser.setToken(token);
+				}
+					return getuser;
+		}else {
+			return new User();
+		}
 	}
 }

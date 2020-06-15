@@ -16,5 +16,8 @@ public class UserService {
 		return userRepository.findAll();
 	}
 	
+    public User getOneUser(String username, String pass) {
+    	return userRepository.findUserByStatusAndName(username, pass);
+    }
 
 }
