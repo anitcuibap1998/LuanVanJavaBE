@@ -29,33 +29,36 @@ public class UserController {
 	@Autowired
 	private UserService userService ;
 	
-	@PostMapping(path="/getOne" ,consumes = "application/json", produces = "application/json")
-	public User getAll(
-//			@RequestHeader("token") String token,
-			@RequestBody User user) {
-		//mã hóa MD5 pass
-//		System.out.println("mã token: "+token);
-		String hashpass=MD5.getMd5(user.getPass());
-		System.out.println(hashpass);
-		User user2= new User();
-		System.out.println("===Debug===");
-		System.out.println(user);
-		List<User> ds= (List<User>) userService.findAll();
-		for(User u : ds) {
-			if(u.getUsername().equals(user.getUsername())&& u.getPass().equals(hashpass)) {
-					u.setPass("Đã Ẩn");
-					return u;
-			}
-		}
-		return user2;
-	}
+//	@PostMapping(path="/getOne" ,consumes = "application/json", produces = "application/json")
+//	public User getAll(
+////			@RequestHeader("token") String token,
+//			@RequestBody User user) {
+//		//mã hóa MD5 pass
+////		System.out.println("mã token: "+token);
+//		String hashpass=MD5.getMd5(user.getPass());
+//		System.out.println(hashpass);
+//		User user2= new User();
+//		System.out.println("===Debug===");
+//		System.out.println(user);
+//		List<User> ds= (List<User>) userService.findAll();
+//		for(User u : ds) {
+//			if(u.getUsername().equals(user.getUsername())&& u.getPass().equals(hashpass)) {
+//					u.setPass("Đã Ẩn");
+//					return u;
+//			}
+//		}
+//		return user2;
+//	}
 	
 	@GetMapping("/getAll")
-	public List<User> getAll(@RequestHeader("token") String token) {
+	public List<User> getAll(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		System.out.println(token);
+		String userAC = TokenAC.decodeToken(token);
+		System.out.println("giai Ma: "+userAC);
 		System.out.println((List<User>) userService.findAll());
 		return (List<User>) userService.findAll();
 	}
+	
 	@PostMapping(path="/login" ,consumes = "application/json", produces = "application/json")
 	public Object getOneUserCustom(@RequestBody User user) {
 		boolean flag = true;	
@@ -65,7 +68,7 @@ public class UserController {
 			//goi ham create token 
 			String token  ="";
 				try {
-					token = TokenAC.encodeToken(user);
+					token = TokenAC.encodeToken(getuser);
 				} catch (InvalidKeyException e) {
 					flag = false;
 					e.printStackTrace();
@@ -90,7 +93,5 @@ public class UserController {
 		else{
 			return 404;
 		}
-		
-		
 	}
 }
