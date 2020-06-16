@@ -43,19 +43,30 @@ public class TokenAC {
 		return encrypted;
 	}
 	
-	public static String decodeToken(String encrypted) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+	public static Object decodeToken(String encrypted) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+		boolean flag = true;
+		String decrypted ="";
+		System.out.println("trước khi vào giải mã");
+		try {
+			System.out.println("Vào phần try ....");	
+			byte[] byteEncrypted =  Base64.getDecoder().decode(encrypted);
+			System.out.println("giai malan 1 encrypted ---> byteEncrypted: "+byteEncrypted);
+			String SECRET_KEY = "Anvietcodedao.vn";
+			SecretKeySpec skeySpec = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
+			
+			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+			cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+			byte[] byteDecrypted = cipher.doFinal(byteEncrypted);
+		    decrypted = new String(byteDecrypted);
+			
+			System.out.println("Chuoi sau khi giai ma: "+byteDecrypted);
+		}catch (Exception e) {
+			flag = false;
+			System.out.println("vào phần catch và bị lỗi.....");
+			return "404";
+		}
+		return  decrypted; 
 		
-		byte[] byteEncrypted =  Base64.getDecoder().decode(encrypted);
-		System.out.println("giai malan 1 encrypted ---> byteEncrypted: "+byteEncrypted);
-		String SECRET_KEY = "Anvietcodedao.vn";
-		SecretKeySpec skeySpec = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
-		
-		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
-		cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-		byte[] byteDecrypted = cipher.doFinal(byteEncrypted);
-	    String decrypted = new String(byteDecrypted);
-		
-		System.out.println("Chuoi sau khi giai ma: "+byteDecrypted);
-		return decrypted;
 	}
+	
 }

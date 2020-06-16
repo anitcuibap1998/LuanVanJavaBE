@@ -17,7 +17,10 @@ public class UserService {
 	}
 	
     public User getOneUser(String username, String pass) {
-    	return userRepository.findUserByStatusAndName(username, pass);
+    	return userRepository.findUserByNameAndPass(username, pass);
+    }
+    public int updateTokenByUserName(String token, String username) {
+    	return userRepository.updateTokenByUserName(token, username);
     }
 
 }
