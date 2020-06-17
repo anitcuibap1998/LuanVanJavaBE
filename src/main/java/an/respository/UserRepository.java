@@ -17,6 +17,8 @@ public interface UserRepository extends CrudRepository<User, Integer>{
 	@Query("UPDATE User SET token = ?1 WHERE username = ?2")
 	int updateTokenByUserName(String tokenAC, String username);
 	
+	@Query("SELECT u FROM User u WHERE u.username = ?1 and u.token = ?2")
+	User findUserByNameAndToken(String name, String token);
 	
 
 }

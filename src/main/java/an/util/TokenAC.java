@@ -6,6 +6,8 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.crypto.BadPaddingException;
@@ -14,9 +16,19 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import an.model.User;
+import an.respository.UserRepository;
+import an.service.UserService;
 
 public class TokenAC {
+	
+	@Autowired
+	static
+	UserService userService;
+	
 	public static String encodeToken(User user) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 		
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -66,6 +78,40 @@ public class TokenAC {
 			return "404";
 		}
 		return  decrypted; 	
+	}
+	public static  Object xacThucUser(String encrypted) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+		System.out.println("vào hàm xác thực user--->");
+		Map<String, Integer> mapResult = new HashMap<String, Integer>();
+		Object object = decodeToken(encrypted);
+		boolean flag = true;
+		System.out.println(object.toString());
+		//xử lý logic code xac thuc user
+		if(object.equals("404")) {
+			return mapResult.put("statusCode", 404);
+		}else {
+			String[] words = object.toString().split(",");
+			String username = words[1];
+			System.out.println("user name: "+username);
+			System.out.println("token: "+encrypted);
+			try {
+			User result = new User(); 
+			result = userService.getOneUserByToken(username,encrypted);
+			}catch (Exception e) {
+				flag = false;
+				System.out.println("lỗi: "+e);
+			}finally {
+				if(flag==true) {
+					User result = new User(); 
+					result = userService.getOneUserByToken(username,encrypted);
+					System.out.println("Kết Quả: "+result);
+					if(result.getId()>0) {
+						return mapResult.put("statusCode", 200);
+					}
+				}
+			}
+			
+		}
+		return mapResult.put("statusCode", 404);
 	}
 	
 }

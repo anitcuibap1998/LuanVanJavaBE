@@ -22,5 +22,11 @@ public class UserService {
     public int updateTokenByUserName(String token, String username) {
     	return userRepository.updateTokenByUserName(token, username);
     }
+    
+    public User getOneUserByToken( String username,String token) {
+    	User user = new User();
+    	user =userRepository.findUserByNameAndToken(username, token);
+    	return user;
+    }
 
 }

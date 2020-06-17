@@ -35,17 +35,16 @@ public class UserController {
 	@GetMapping("/getAll")
 	public Object getAll(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException,
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-		Map<String, Object> mapResult = new HashMap<>(); 
-		System.out.println("token: " + token);
-
-		Object object = TokenAC.decodeToken(token);
-		System.out.println("giai Ma: " + object);
-		if (!object.equals("404")) {
-			System.out.println((List<User>) userService.findAll());
-			return (List<User>) userService.findAll();
-		} else {
-			mapResult.put("statusCode",404);
-			return mapResult;
+		//gọi hàm xác thực authentication
+		Map<String, Integer> result =(Map<String, Integer>) TokenAC.xacThucUser(token);
+		if(result!=null) {
+		System.out.println("object: "+result);
+		System.out.println("Mã Code-->: "+result.get("statusCode"));
+		
+		return (List<User>) userService.findAll();
+		}else {
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			return map.put("statusCode", 404);
 		}
 	}
 
