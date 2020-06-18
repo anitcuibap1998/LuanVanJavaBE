@@ -23,9 +23,9 @@ public class UserService {
     	return userRepository.updateTokenByUserName(token, username);
     }
     
-    public User getOneUserByToken( String username,String token) {
+    public User getOneUserByToken(String username, String token) {
     	User user = new User();
-    	user =userRepository.findUserByNameAndToken(username, token);
+    	user = userRepository.findUserByNameAndToken(username,token);
     	return user;
     }
 

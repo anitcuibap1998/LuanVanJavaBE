@@ -2,7 +2,6 @@ package an.controller;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import an.model.User;
+import an.service.AuthenticationService;
 import an.service.UserService;
 import an.util.MD5;
 import an.util.TokenAC;
@@ -31,21 +31,23 @@ import an.util.TokenAC;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private AuthenticationService authenticationService;
 
 	@GetMapping("/getAll")
 	public Object getAll(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException,
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		//gọi hàm xác thực authentication
-		Map<String, Integer> result =(Map<String, Integer>) TokenAC.xacThucUser(token);
-		if(result!=null) {
+		boolean result = authenticationService.xacThucUser(token);
 		System.out.println("object: "+result);
-		System.out.println("Mã Code-->: "+result.get("statusCode"));
-		
-		return (List<User>) userService.findAll();
-		}else {
-			Map<String, Integer> map = new HashMap<String, Integer>();
-			return map.put("statusCode", 404);
+		if(result) {
+			return (List<User>) userService.findAll();
 		}
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("statusCode", 404);
+		return map ;
+		
+//		return (List<User>) userService.findAll();
 	}
 
 	@PostMapping(path = "/login", consumes = "application/json", produces = "application/json")

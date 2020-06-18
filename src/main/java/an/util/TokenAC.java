@@ -6,8 +6,6 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import javax.crypto.BadPaddingException;
@@ -16,18 +14,9 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import an.model.User;
-import an.respository.UserRepository;
-import an.service.UserService;
 
 public class TokenAC {
-	
-	@Autowired
-	static
-	UserService userService;
 	
 	public static String encodeToken(User user) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 		
@@ -55,7 +44,7 @@ public class TokenAC {
 		return encrypted;
 	}
 	
-	public static Object decodeToken(String encrypted) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+	public static String decodeToken(String encrypted) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 		boolean flag = true;
 		String decrypted ="";
 		System.out.println("trước khi vào giải mã");
@@ -65,7 +54,6 @@ public class TokenAC {
 			System.out.println("giai malan 1 encrypted ---> byteEncrypted: "+byteEncrypted);
 			String SECRET_KEY = "Anvietcodedao.vn";
 			SecretKeySpec skeySpec = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
-			
 			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
 			cipher.init(Cipher.DECRYPT_MODE, skeySpec);
 			byte[] byteDecrypted = cipher.doFinal(byteEncrypted);
@@ -79,39 +67,6 @@ public class TokenAC {
 		}
 		return  decrypted; 	
 	}
-	public static  Object xacThucUser(String encrypted) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-		System.out.println("vào hàm xác thực user--->");
-		Map<String, Integer> mapResult = new HashMap<String, Integer>();
-		Object object = decodeToken(encrypted);
-		boolean flag = true;
-		System.out.println(object.toString());
-		//xử lý logic code xac thuc user
-		if(object.equals("404")) {
-			return mapResult.put("statusCode", 404);
-		}else {
-			String[] words = object.toString().split(",");
-			String username = words[1];
-			System.out.println("user name: "+username);
-			System.out.println("token: "+encrypted);
-			try {
-			User result = new User(); 
-			result = userService.getOneUserByToken(username,encrypted);
-			}catch (Exception e) {
-				flag = false;
-				System.out.println("lỗi: "+e);
-			}finally {
-				if(flag==true) {
-					User result = new User(); 
-					result = userService.getOneUserByToken(username,encrypted);
-					System.out.println("Kết Quả: "+result);
-					if(result.getId()>0) {
-						return mapResult.put("statusCode", 200);
-					}
-				}
-			}
-			
-		}
-		return mapResult.put("statusCode", 404);
-	}
+	
 	
 }

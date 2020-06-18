@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.w3c.dom.ls.LSInput;
 
 import an.model.ChiTietToaThuoc;
 import an.model.Thuoc;
@@ -32,6 +31,7 @@ public class ChiTietToaThuocController {
 	ToaThuocService toaThuocService;
 	@Autowired
 	ThuocService thuocService;
+	
 	@PostMapping(path="/addOne" ,consumes = "application/json", produces = "application/json")
 	public List<ChiTietToaThuoc> addOne(@RequestBody List<ChiTietToaThuoc> list) {
 		
