@@ -21,5 +21,6 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	@Query(value="SELECT * FROM User u WHERE u.username = ?1 and u.token = ?2",nativeQuery = true)
 	User findUserByNameAndToken(String name, String token);
 	
-
+	@Query(value="SELECT * FROM User u WHERE u.username = ?1",nativeQuery = true)
+	User findUserByName(String name);
 }

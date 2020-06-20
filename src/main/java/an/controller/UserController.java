@@ -34,18 +34,18 @@ public class UserController {
 	@Autowired
 	private AuthenticationService authenticationService;
 
-	@GetMapping("/getAll")
+	@GetMapping("/getOne")
 	public Object getAll(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException,
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		//gọi hàm xác thực authentication
 		boolean result = authenticationService.xacThucUser(token);
 		System.out.println("object: "+result);
 		if(result) {
-			return (List<User>) userService.findAll();
+			return userService.getOneUserByName(token);
 		}
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("statusCode", 404);
-		return map ;
+		return map;
 		
 //		return (List<User>) userService.findAll();
 	}
@@ -90,4 +90,26 @@ public class UserController {
 			return mapResult;
 		}
 	}
+	
+	
+	@GetMapping(path = "/checkRole")
+	public int xacThucUser(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+		//khởi tạo biến kiểm soát logic
+		boolean xacthuc = authenticationService.xacThucUser(token);
+		if(!xacthuc) {
+			return 404;
+		}else {
+			String decodeToken = TokenAC.decodeToken(token);
+			String[] words = decodeToken.split(",");
+			String username = words[1].trim();
+			int role = Integer.parseInt(words[2]);
+			System.out.println("username: "+username);
+			System.out.println("role: "+role);
+			return role;
+		}
+ 	}
+	
+
+	
+	
 }
