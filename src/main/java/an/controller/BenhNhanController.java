@@ -1,18 +1,29 @@
 package an.controller;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import an.model.BenhNhan;
+import an.service.AuthenticationService;
 import an.service.BenhNhanService;
+import an.service.UserService;
 
 @RestController
 @CrossOrigin(origins = "http://127.0.0.1:5500")
@@ -22,24 +33,37 @@ public class BenhNhanController {
 	@Autowired
 	private BenhNhanService benhNhanService;
 	
+	@Autowired
+	private AuthenticationService authenticationService;
+	
+	
 	@GetMapping("/getAll")
-	public List<BenhNhan> getAll() {
-		System.out.println((List<BenhNhan>) benhNhanService.findAll());
-		return (List<BenhNhan>) benhNhanService.findAll();
+	public Object getAll(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+		boolean result = authenticationService.xacThucUser(token);
+		if(result) {
+			System.out.println("object: "+result);
+			System.out.println((List<BenhNhan>) benhNhanService.findAll());
+			return (List<BenhNhan>) benhNhanService.findAll();
+		}
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("statusCode", 404);
+		return map;
 	}
 	
 	@PostMapping(path="/addOne" ,consumes = "application/json", produces = "application/json")
-	public BenhNhan addOne(@RequestBody BenhNhan benhnhan) {
-		BenhNhan benhnhan2 = new BenhNhan();
-		System.out.println("-----aaa-----");
-		System.out.println(benhnhan);
-		System.out.println("-----bbb-----");
-		benhnhan2 = benhNhanService.save(benhnhan);
-		return benhnhan2 ;
+	public Object addOne(@RequestHeader("tokenAC") String token ,@RequestBody BenhNhan benhnhan) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+		boolean result = authenticationService.xacThucUser(token);
+		System.out.println("object: "+result);
+		if(result) {
+			return benhNhanService.save(benhnhan);
+		}
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("statusCode", 404);
+		return map;
 	}
 	
 	@GetMapping("/getOne")
-	public BenhNhan getOne(@RequestParam int id) {
+	public BenhNhan getOne(@RequestHeader("tokenAC") String token ,@RequestParam int id) {
 		BenhNhan benhnhan = new BenhNhan();
 		System.out.println((List<BenhNhan>) benhNhanService.findAll());
 		List<BenhNhan> listbn = (List<BenhNhan>) benhNhanService.findAll();
@@ -51,4 +75,6 @@ public class BenhNhanController {
 		}
 		return benhnhan;
 	}
+
+
 }
