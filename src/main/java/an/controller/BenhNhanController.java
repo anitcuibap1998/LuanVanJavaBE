@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import an.model.BenhNhan;
 import an.service.AuthenticationService;
 import an.service.BenhNhanService;
-import an.service.UserService;
 
 @RestController
 @CrossOrigin(origins = "http://127.0.0.1:5500")
@@ -74,6 +73,18 @@ public class BenhNhanController {
 			}
 		}
 		return benhnhan;
+	}
+	
+	@GetMapping("/getOneBNLasted")
+	public Object getBNLasted(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+		boolean result = authenticationService.xacThucUser(token);
+		System.out.println("object: "+result);
+		if(result) {
+			return benhNhanService.getBNLasted();
+		}
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("statusCode", 404);
+		return map;
 	}
 
 

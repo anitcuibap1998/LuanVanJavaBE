@@ -1,9 +1,10 @@
 package an.respository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import an.model.ToaThuoc;
 
-public interface ToaThuocRepository extends CrudRepository<ToaThuoc, Integer>{
-
+public interface ToaThuocRepository extends JpaRepository<ToaThuoc, Integer>{
+	
+	
 }

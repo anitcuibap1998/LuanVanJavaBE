@@ -20,5 +20,8 @@ public class BenhNhanService {
 		return benhNhanRepository.save(benhnhan);
 	}
 	
+	public BenhNhan getBNLasted() {
+		return benhNhanRepository.findBenhNhanLasted();
+	}
 	
 }
