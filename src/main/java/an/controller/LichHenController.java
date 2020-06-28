@@ -78,7 +78,7 @@ public class LichHenController {
 		for(BenhNhan a : listbn) {
 			if(a.getId()==lichhen.getId_benh_nhan())
 			{
-				lichhen.setLast_name(a.getLast_name());
+				lichhen.setLast_name(a.getFull_name());
 			}
 		}
 		lichhen2 = lichHenSevice.save(lichhen);

@@ -1,5 +1,7 @@
 package an.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +14,8 @@ public class BenhNhanService {
 	@Autowired
 	BenhNhanRepository benhNhanRepository;
 
-	public Iterable<BenhNhan> findAll() {
-		return benhNhanRepository.findAll();
+	public List<BenhNhan> findAll() {
+		return benhNhanRepository.findAllDESC();
 	}
 
 	public BenhNhan  save(BenhNhan benhnhan) {
@@ -22,6 +24,11 @@ public class BenhNhanService {
 	
 	public BenhNhan getBNLasted() {
 		return benhNhanRepository.findBenhNhanLasted();
+	}
+	public List<BenhNhan> timkiemTuongDoi(String keysearch){
+		System.out.println("vào service bệnh nhân.");
+		System.out.println(keysearch);
+		return benhNhanRepository.timKiemTuongDoi(keysearch);
 	}
 	
 }

@@ -49,6 +49,19 @@ public class BenhNhanController {
 		return map;
 	}
 	
+	@GetMapping("/timkiemTuongDoi")
+	public Object timkiemTuongDoi(@RequestHeader("tokenAC") String token, @RequestParam String keysearch) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+		boolean result = authenticationService.xacThucUser(token);
+		if(result) {
+			System.out.println("object: "+result);
+			System.out.println((List<BenhNhan>) benhNhanService.timkiemTuongDoi(keysearch));
+			return (List<BenhNhan>) benhNhanService.timkiemTuongDoi(keysearch);
+		}
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("statusCode", 404);
+		return map;
+	}
+	
 	@PostMapping(path="/addOne" ,consumes = "application/json", produces = "application/json")
 	public Object addOne(@RequestHeader("tokenAC") String token ,@RequestBody BenhNhan benhnhan) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);

@@ -14,15 +14,13 @@ public class BenhNhan {
 	@Id
 	@GeneratedValue(strategy =GenerationType.AUTO)
 	private int id;
-	private String first_name;
-	private	String last_name;
+	private String full_name;
 	private int phone;
 	private String address;
 	private int sex;
 	private String tien_su_benh;
 	private Date birth_date;
 	private String ghi_chu;
-	
 	
 	
 	public BenhNhan() {
@@ -35,18 +33,7 @@ public class BenhNhan {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getFirst_name() {
-		return first_name;
-	}
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
-	}
-	public String getLast_name() {
-		return last_name;
-	}
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
-	}
+	
 	public int getPhone() {
 		return phone;
 	}
@@ -84,11 +71,19 @@ public class BenhNhan {
 		this.ghi_chu = ghi_chu;
 	}
 
+	public String getFull_name() {
+		return full_name;
+	}
+
+	public void setFull_name(String full_name) {
+		this.full_name = full_name;
+	}
+
 	@Override
 	public String toString() {
-		return "BenhNhan [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", phone=" + phone
-				+ ", address=" + address + ", sex=" + sex + ", tien_su_benh=" + tien_su_benh + ", birth_date="
-				+ birth_date + ", ghi_chu=" + ghi_chu + "]";
+		return "BenhNhan [id=" + id + ", full_name=" + full_name + ", phone=" + phone + ", address=" + address
+				+ ", sex=" + sex + ", tien_su_benh=" + tien_su_benh + ", birth_date=" + birth_date + ", ghi_chu="
+				+ ghi_chu + "]";
 	}
 
 	
