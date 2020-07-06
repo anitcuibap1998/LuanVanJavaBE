@@ -36,32 +36,48 @@ public class LichHenController {
 	@Autowired
 	private AuthenticationService authenticationService;
 	
-	
-	@GetMapping("/getAllByDate")
-	public List<LichHen> getAll() {
-		System.out.println((List<LichHen>) lichHenSevice.findAll());
-		
-		return (List<LichHen>) lichHenSevice.findAll();
-	}
-	@GetMapping("/getOneById")
-	public LichHen getOne(@RequestParam int id) {
-		LichHen lichHen = new LichHen();
-		List<LichHen> lists=(List<LichHen>) lichHenSevice.findAll();
-		System.out.println((List<LichHen>) lichHenSevice.findAll());
-		for(LichHen lh : lists) {
-			if(lh.getId()==id) {
-				return lh;
-			}
-		}
-		return lichHen;
-	}
+//	
+//	@GetMapping("/getAllByDate")
+//	public List<LichHen> getAll() {
+//		System.out.println((List<LichHen>) lichHenSevice.findAll());
+//		
+//		return (List<LichHen>) lichHenSevice.findAll();
+//	}
+//	@GetMapping("/getOneById")
+//	public LichHen getOne(@RequestParam int id) {
+//		LichHen lichHen = new LichHen();
+//		List<LichHen> lists=(List<LichHen>) lichHenSevice.findAll();
+//		System.out.println((List<LichHen>) lichHenSevice.findAll());
+//		for(LichHen lh : lists) {
+//			if(lh.getId()==id) {
+//				return lh;
+//			}
+//		}
+//		return lichHen;
+//	}
 	@GetMapping("/getAllByDay")
 	public Object getAllToDay(@RequestHeader("tokenAC")String token, @RequestParam String inputdate) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		if(result) {
 			System.out.println("object: "+result);
-			return lichHenSevice.getListLichHenByDay(inputdate);
+			List<LichHen> kq = lichHenSevice.getListLichHenByDay(inputdate);
+			if(kq.isEmpty()) {
+				map.put("statusCode", 1000);
+				return map;
+			}
+			return kq;
+ 		}
+		map.put("statusCode", 404);
+		return map;
+	}
+	@GetMapping("/deleteLichHen")
+	public Object deleteLichHen(@RequestHeader("tokenAC")String token, @RequestParam int idLH) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+		boolean result = authenticationService.xacThucUser(token);
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		if(result) {
+			System.out.println("object: "+result);
+			return lichHenSevice.deleteLichHenById(idLH);
  		}
 		map.put("statusCode", 404);
 		return map;
@@ -72,7 +88,7 @@ public class LichHenController {
 		boolean result = authenticationService.xacThucUser(token);
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		if(result) {
-			System.out.println("object: "+result);
+			System.out.println("Ngày Hẹn Lịch: "+lichhen.getDate());
 			return lichHenSevice.save(lichhen);
  		}
 		map.put("statusCode", 404);

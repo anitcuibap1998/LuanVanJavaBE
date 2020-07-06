@@ -41,5 +41,9 @@ public class LichHenSevice {
 		}
 		return hen1;
 	}
+	public int deleteLichHenById(int idLH) {
+		return lichHenRepository.deleteLichHenById(idLH);
+	}
+	
 
 }
