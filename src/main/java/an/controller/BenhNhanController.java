@@ -39,12 +39,13 @@ public class BenhNhanController {
 	@GetMapping("/getAll")
 	public Object getAll(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);
+		Map<String, Integer> map = new HashMap<String, Integer>();
 		if(result) {
 			System.out.println("object: "+result);
 			System.out.println((List<BenhNhan>) benhNhanService.findAll());
 			return (List<BenhNhan>) benhNhanService.findAll();
+			
 		}
-		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("statusCode", 404);
 		return map;
 	}
@@ -52,12 +53,17 @@ public class BenhNhanController {
 	@GetMapping("/timkiemTuongDoi")
 	public Object timkiemTuongDoi(@RequestHeader("tokenAC") String token, @RequestParam String keysearch) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);
+		Map<String, Integer> map = new HashMap<String, Integer>();
 		if(result) {
 			System.out.println("object: "+result);
 			System.out.println((List<BenhNhan>) benhNhanService.timkiemTuongDoi(keysearch));
-			return (List<BenhNhan>) benhNhanService.timkiemTuongDoi(keysearch);
+			List<BenhNhan> dSBN = (List<BenhNhan>) benhNhanService.timkiemTuongDoi(keysearch);
+			if(dSBN.isEmpty()) {
+				map.put("statusCode", 1000);
+				return map;
+			}
+			return dSBN;
 		}
-		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("statusCode", 404);
 		return map;
 	}

@@ -24,9 +24,9 @@ public class LichHenSevice {
 		return lichHenRepository.findAll();
 	}
 	
-//	@Query("SELECT u FROM User u WHERE u.status = 1")
-//    List<LichHen> findAllActiveUsers();
-	
+	public List<LichHen> getListLichHenByDay(String date){
+		return (List<LichHen>) lichHenRepository.getListLichHenByDay(date);
+	}	
 	
 	public LichHen  save(LichHen lichhen) {
 		return lichHenRepository.save(lichhen);
