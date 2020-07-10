@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import an.model.Thuoc;
+import an.model.ToaThuoc;
 import an.respository.ThuocRepository;
 
 @Service
@@ -32,4 +33,8 @@ public class ThuocService {
 		}
 		return thuoc3;
 	}
+	//get list thuoc by name
+	public List<Thuoc> getListThuocByName(String name){
+		return thuocRepository.findAllThuocByName(name);
+	} 
 }

@@ -36,14 +36,13 @@ public class LoaiKhamController {
 	
 	@GetMapping("/getAll")
 	public Object getAll(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-		
+		Map<String, Integer> map = new HashMap<String, Integer>();
 		boolean result = authenticationService.xacThucUser(token);
 		if(result) {
 			System.out.println("object: "+result);
 			System.out.println((List<LoaiKham>) loaiKhamService.findAll());
 			return (List<LoaiKham>) loaiKhamService.findAll();
 		}
-		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("statusCode", 404);
 		return map;
 	}
