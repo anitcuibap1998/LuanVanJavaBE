@@ -16,6 +16,9 @@ public class ChiTietToaThuoc {
 	private	int id_thuoc;
 	private int so_luong_thuoc;
 	private String cach_dung;
+	
+	
+	
 	public int getId_chi_tiet() {
 		return id_chi_tiet;
 	}

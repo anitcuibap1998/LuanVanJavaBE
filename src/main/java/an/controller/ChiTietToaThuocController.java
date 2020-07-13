@@ -1,13 +1,22 @@
 package an.controller;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import an.model.ChiTietToaThuoc;
 import an.model.Thuoc;
 import an.model.ToaThuoc;
+import an.service.AuthenticationService;
 import an.service.ChiTietToaThuocService;
 import an.service.ThuocService;
 import an.service.ToaThuocService;
@@ -32,13 +42,22 @@ public class ChiTietToaThuocController {
 	@Autowired
 	ThuocService thuocService;
 	
+	@Autowired
+	private AuthenticationService authenticationService;
+	
 	@PostMapping(path="/addOne" ,consumes = "application/json", produces = "application/json")
-	public List<ChiTietToaThuoc> addOne(@RequestBody List<ChiTietToaThuoc> list) {
-		
-		for(ChiTietToaThuoc chiTietToaThuoc : list) {
-			chiTietThuocService.save(chiTietToaThuoc);
+	public Object addOne(@RequestHeader("tokenAC") String token,@RequestBody List<ChiTietToaThuoc> list) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+		boolean result = authenticationService.xacThucUser(token);
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		if(result) {
+			for(ChiTietToaThuoc chiTietToaThuoc : list) {
+				chiTietThuocService.save(chiTietToaThuoc);
+			}
+			return list ;
 		}
-		return list ;
+		map.put("statusCode", 404);
+		return map;
+		
 	}
 	@GetMapping(path="/getAll")
 	public List<ChiTietToaThuoc> getAll() {
