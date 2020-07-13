@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class LichHen {
 	
 	@Id
-	@GeneratedValue(strategy =GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private Time time;
 	private	int id_benh_nhan;

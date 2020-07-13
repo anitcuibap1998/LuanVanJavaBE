@@ -13,7 +13,7 @@ import javax.persistence.Table;
 public class Thuoc {
 
 	@Id
-	@GeneratedValue(strategy =GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_thuoc;
 	private String ten_thuoc;
 	private	String cong_dung;
