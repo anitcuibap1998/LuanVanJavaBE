@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class ChiTietToaThuoc {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id_chi_tiet;
+	private int id;
 	private int id_toa_thuoc;
 	private	int id_thuoc;
 	private int so_luong_thuoc;
@@ -19,11 +19,11 @@ public class ChiTietToaThuoc {
 	
 	
 	
-	public int getId_chi_tiet() {
-		return id_chi_tiet;
+	public int getId() {
+		return id;
 	}
-	public void setId_chi_tiet(int id_chi_tiet) {
-		this.id_chi_tiet = id_chi_tiet;
+	public void setId(int id) {
+		this.id = id;
 	}
 	public int getId_toa_thuoc() {
 		return id_toa_thuoc;
@@ -51,7 +51,7 @@ public class ChiTietToaThuoc {
 	}
 	@Override
 	public String toString() {
-		return "ChiTietToaThuoc1 [id_chi_tiet=" + id_chi_tiet + ", id_toa_thuoc=" + id_toa_thuoc + ", id_thuoc="
+		return "ChiTietToaThuoc1 [id=" + id + ", id_toa_thuoc=" + id_toa_thuoc + ", id_thuoc="
 				+ id_thuoc + ", so_luong_thuoc=" + so_luong_thuoc + ", cach_dung=" + cach_dung + "]";
 	}
 
