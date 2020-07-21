@@ -26,7 +26,6 @@ import an.model.LichHen;
 import an.service.AuthenticationService;
 import an.service.LichHenSevice;
 
-
 @RestController
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping("/lich_hen")
@@ -35,62 +34,50 @@ public class LichHenController {
 	private LichHenSevice lichHenSevice;
 	@Autowired
 	private AuthenticationService authenticationService;
-	
-//	
-//	@GetMapping("/getAllByDate")
-//	public List<LichHen> getAll() {
-//		System.out.println((List<LichHen>) lichHenSevice.findAll());
-//		
-//		return (List<LichHen>) lichHenSevice.findAll();
-//	}
-//	@GetMapping("/getOneById")
-//	public LichHen getOne(@RequestParam int id) {
-//		LichHen lichHen = new LichHen();
-//		List<LichHen> lists=(List<LichHen>) lichHenSevice.findAll();
-//		System.out.println((List<LichHen>) lichHenSevice.findAll());
-//		for(LichHen lh : lists) {
-//			if(lh.getId()==id) {
-//				return lh;
-//			}
-//		}
-//		return lichHen;
-//	}
+
 	@GetMapping("/getAllByDay")
-	public Object getAllToDay(@RequestHeader("tokenAC")String token, @RequestParam String inputdate) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	public Object getAllToDay(@RequestHeader("tokenAC") String token, @RequestParam String inputdate)
+			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);
 		Map<String, Integer> map = new HashMap<String, Integer>();
-		if(result) {
-			System.out.println("object: "+result);
+		if (result) {
+			System.out.println("object: " + result);
 			List<LichHen> kq = lichHenSevice.getListLichHenByDay(inputdate);
-			if(kq.isEmpty()) {
+			if (kq.isEmpty()) {
 				map.put("statusCode", 1000);
 				return map;
 			}
 			return kq;
- 		}
+		}
 		map.put("statusCode", 404);
 		return map;
 	}
+
 	@GetMapping("/deleteLichHen")
-	public Object deleteLichHen(@RequestHeader("tokenAC")String token, @RequestParam int idLH) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	public Object deleteLichHen(@RequestHeader("tokenAC") String token, @RequestParam int idLH)
+			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);
 		Map<String, Integer> map = new HashMap<String, Integer>();
-		if(result) {
-			System.out.println("object: "+result);
+		if (result) {
+			System.out.println("object: " + result);
 			return lichHenSevice.deleteLichHenById(idLH);
- 		}
+		}
 		map.put("statusCode", 404);
 		return map;
 	}
-	
-	@PostMapping(path="/addOne" ,consumes = "application/json", produces = "application/json")
-	public Object addOne(@RequestHeader("tokenAC") String token,@RequestBody LichHen lichhen) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+
+	@PostMapping(path = "/addOne", consumes = "application/json", produces = "application/json")
+	public Object addOne(@RequestHeader("tokenAC") String token, @RequestBody LichHen lichhen)
+			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);
 		Map<String, Integer> map = new HashMap<String, Integer>();
-		if(result) {
-			System.out.println("Ngày Hẹn Lịch: "+lichhen.getDate());
+		if (result) {
+			System.out.println("Ngày Hẹn Lịch: " + lichhen.getDate());
 			return lichHenSevice.save(lichhen);
- 		}
+		}
 		map.put("statusCode", 404);
 		return map;
 	}

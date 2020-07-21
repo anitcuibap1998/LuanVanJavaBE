@@ -1,8 +1,5 @@
 package an.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,23 +9,16 @@ import an.respository.ToaThuocRepository;
 @Service
 public class ToaThuocService {
 	@Autowired
-	ToaThuocRepository ToaThuocRepository;
+	ToaThuocRepository toaThuocRepository;
 
 	public Iterable<ToaThuoc> findAll() {
-		return ToaThuocRepository.findAll();
+		return toaThuocRepository.findAll();
 	}
 	public ToaThuoc saveOne(ToaThuoc toathuoc) {
-		return ToaThuocRepository.save(toathuoc);
+		return toaThuocRepository.save(toathuoc);
 	}
-	public ToaThuoc findAllByIdToa(int id) {
-		ToaThuoc toathuoc1 = new ToaThuoc();
-		List<ToaThuoc> list = (List<ToaThuoc>) ToaThuocRepository.findAll();
-		for(ToaThuoc toathuoc: list) {
-			if(toathuoc.getId()== id) {
-				return toathuoc;
-			}
-		}
-		return toathuoc1;
+	public ToaThuoc getOne(int id) {
+		return toaThuocRepository.getOne(id);
 	}
 
 }

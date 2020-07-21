@@ -31,34 +31,36 @@ public class BenhNhanController {
 
 	@Autowired
 	private BenhNhanService benhNhanService;
-	
+
 	@Autowired
 	private AuthenticationService authenticationService;
-	
-	
+
 	@GetMapping("/getAll")
-	public Object getAll(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	public Object getAll(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException,
+			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);
 		Map<String, Integer> map = new HashMap<String, Integer>();
-		if(result) {
-			System.out.println("object: "+result);
+		if (result) {
+			System.out.println("object: " + result);
 			System.out.println((List<BenhNhan>) benhNhanService.findAll());
 			return (List<BenhNhan>) benhNhanService.findAll();
-			
+
 		}
 		map.put("statusCode", 404);
 		return map;
 	}
-	
+
 	@GetMapping("/timkiemTuongDoi")
-	public Object timkiemTuongDoi(@RequestHeader("tokenAC") String token, @RequestParam String keysearch) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	public Object timkiemTuongDoi(@RequestHeader("tokenAC") String token, @RequestParam String keysearch)
+			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);
 		Map<String, Integer> map = new HashMap<String, Integer>();
-		if(result) {
-			System.out.println("object: "+result);
+		if (result) {
+			System.out.println("object: " + result);
 			System.out.println((List<BenhNhan>) benhNhanService.timkiemTuongDoi(keysearch));
 			List<BenhNhan> dSBN = (List<BenhNhan>) benhNhanService.timkiemTuongDoi(keysearch);
-			if(dSBN.isEmpty()) {
+			if (dSBN.isEmpty()) {
 				map.put("statusCode", 1000);
 				return map;
 			}
@@ -67,44 +69,32 @@ public class BenhNhanController {
 		map.put("statusCode", 404);
 		return map;
 	}
-	
-	@PostMapping(path="/addOne" ,consumes = "application/json", produces = "application/json")
-	public Object addOne(@RequestHeader("tokenAC") String token ,@RequestBody BenhNhan benhnhan) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+
+	@PostMapping(path = "/addOne", consumes = "application/json", produces = "application/json")
+	public Object addOne(@RequestHeader("tokenAC") String token, @RequestBody BenhNhan benhnhan)
+			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);
-		System.out.println("object: "+result);
-		if(result) {
+		System.out.println("object: " + result);
+		if (result) {
 			return benhNhanService.save(benhnhan);
 		}
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("statusCode", 404);
 		return map;
 	}
-	
-	@GetMapping("/getOne")
-	public BenhNhan getOne(@RequestHeader("tokenAC") String token ,@RequestParam int id) {
-		BenhNhan benhnhan = new BenhNhan();
-		System.out.println((List<BenhNhan>) benhNhanService.findAll());
-		List<BenhNhan> listbn = (List<BenhNhan>) benhNhanService.findAll();
-		for(BenhNhan a : listbn) {
-			if(a.getId()==id)
-			{
-				return a;
-			}
-		}
-		return benhnhan;
-	}
-	
+
 	@GetMapping("/getOneBNLasted")
-	public Object getBNLasted(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	public Object getBNLasted(@RequestHeader("tokenAC") String token) throws InvalidKeyException,
+			NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);
-		System.out.println("object: "+result);
-		if(result) {
+		System.out.println("object: " + result);
+		if (result) {
 			return benhNhanService.getBNLasted();
 		}
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("statusCode", 404);
 		return map;
 	}
-
 
 }

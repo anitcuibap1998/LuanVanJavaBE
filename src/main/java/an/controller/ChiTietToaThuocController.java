@@ -65,28 +65,6 @@ public class ChiTietToaThuocController {
 	}
 	
 	
-	@GetMapping(path="/getAllByIdToa")
-	public OneToa getAllByIdToa(@RequestParam int id) {
-		OneToa toa = new OneToa();
-		List<ChiTietToaThuoc> chiTiets = chiTietThuocService.findAllByIdToa(id);
-		ToaThuoc toaThuoc = toaThuocService.findAllByIdToa(id);
-		toa.setLists(chiTiets);
-		toa.setToaThuoc(toaThuoc);
-		return toa;
-	}
-	@GetMapping(path="/getAllByIdToaFull")
-	public OneToa2 getAllByIdToaFull(@RequestParam int id) {
-		OneToa2 toa = new OneToa2();
-		List<Thuoc> listThuoc = new ArrayList<Thuoc>();
-		List<ChiTietToaThuoc> chiTiets = chiTietThuocService.findAllByIdToa(id);
-		for (ChiTietToaThuoc chiTietToaThuoc : chiTiets) {
-			listThuoc.add(thuocService.getOneByIdThuoc(chiTietToaThuoc.getId_thuoc()));
-		}
-		ToaThuoc toaThuoc = toaThuocService.findAllByIdToa(id);
-		toa.setLists(chiTiets);
-		toa.setToaThuoc(toaThuoc);
-		toa.setThuoc(listThuoc);
-		return toa;
-	}
+
 	
 }

@@ -11,25 +11,18 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name="city")
+@Table(name="info_hospital")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class City implements Serializable{
+public class InfoPhongKham implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private int id;
 	private String name;
-	public City() {
-		super();
-	}
-	public City(Integer id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
-	public Integer getId() {
+	private String dia_chi;
+	public int getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -38,9 +31,15 @@ public class City implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getDia_chi() {
+		return dia_chi;
+	}
+	public void setDia_chi(String dia_chi) {
+		this.dia_chi = dia_chi;
+	}
 	@Override
 	public String toString() {
-		return "City [id=" + id + ", name=" + name + "]";
+		return "InfoPhongKham [id=" + id + ", name=" + name + ", dia_chi=" + dia_chi + "]";
 	}
 	
 }

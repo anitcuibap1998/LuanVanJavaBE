@@ -30,5 +30,7 @@ public class BenhNhanService {
 		System.out.println(keysearch);
 		return benhNhanRepository.timKiemTuongDoi(keysearch);
 	}
-	
+	public BenhNhan getOne(int id) {
+		return benhNhanRepository.getOne(id);
+	}
 }

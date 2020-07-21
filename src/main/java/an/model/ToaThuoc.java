@@ -1,5 +1,6 @@
 package an.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -8,9 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="toa_thuoc")
-public class ToaThuoc {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class ToaThuoc implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -18,6 +22,7 @@ public class ToaThuoc {
 	private Date ngay_ke_toa;
 	private	int id_bac_si;
 	private String chuan_doan;
+	private String dan_do;
 	private int id_gia_kham;
 	private int id_lich_hen;
 	
@@ -65,11 +70,19 @@ public class ToaThuoc {
 	public void setId_gia_kham(int id_gia_kham) {
 		this.id_gia_kham = id_gia_kham;
 	}
+	public String getDan_do() {
+		return dan_do;
+	}
+	public void setDan_do(String dan_do) {
+		this.dan_do = dan_do;
+	}
 	@Override
 	public String toString() {
 		return "ToaThuoc [id=" + id + ", id_benh_nhan=" + id_benh_nhan + ", ngay_ke_toa=" + ngay_ke_toa + ", id_bac_si="
-				+ id_bac_si + ", chuan_doan=" + chuan_doan + ", id_gia_kham=" + id_gia_kham + "]";
+				+ id_bac_si + ", chuan_doan=" + chuan_doan + ", dan_do=" + dan_do + ", id_gia_kham=" + id_gia_kham
+				+ ", id_lich_hen=" + id_lich_hen + "]";
 	}
+	
 	
 	
 }

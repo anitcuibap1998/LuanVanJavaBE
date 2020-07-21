@@ -1,7 +1,8 @@
 package an.model;
 
-import java.sql.Time;
+import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Time;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,9 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="lich_hen")
-public class LichHen {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class LichHen implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

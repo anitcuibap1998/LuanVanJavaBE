@@ -8,8 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="benh_nhan")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BenhNhan {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

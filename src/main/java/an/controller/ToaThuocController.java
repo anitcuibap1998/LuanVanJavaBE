@@ -25,11 +25,14 @@ import com.google.gson.Gson;
 
 import an.model.BenhNhan;
 import an.model.ChiTietToaThuoc;
+import an.model.InfoPhongKham;
 import an.model.ToaThuoc;
 import an.service.AuthenticationService;
+import an.service.BenhNhanService;
+import an.service.ChiTietToaThuocService;
+import an.service.InfoPhongKhamService;
 import an.service.ThuocService;
 import an.service.ToaThuocService;
-import dto.OneToa;
 import dto.ToaThuocGSON;
 
 @RestController
@@ -41,53 +44,80 @@ public class ToaThuocController {
 	@Autowired
 	ThuocService thuocService;
 	@Autowired
-	private AuthenticationService authenticationService;
-	
-	@PostMapping(path="/addOneNull" ,consumes = "application/json", produces = "application/json")
+	AuthenticationService authenticationService;
+	@Autowired
+	InfoPhongKhamService infoPhongKhamService;
+	@Autowired
+	BenhNhanService benhNhanService;
+	@Autowired
+	ChiTietToaThuocService chiTietToaThuocService;
+
+	@PostMapping(path = "/addOneNull", consumes = "application/json", produces = "application/json")
 	public Object addOne11(@RequestBody Object object) {
 		System.out.println(object);
 		System.out.println((object.getClass().getName()));
 		System.out.println(object.getClass());
 		System.out.println((object.getClass().getName()));
-		
+
 		Gson gson = new Gson();
 		String jsonInString = object.toString();
 		System.out.println(jsonInString);
-		ToaThuocGSON resut= gson.fromJson(jsonInString, ToaThuocGSON.class);
+		ToaThuocGSON resut = gson.fromJson(jsonInString, ToaThuocGSON.class);
 		System.out.println(resut.getToaThuoc());
 		System.out.println(resut.getListThuoc().get(0).getTenThuoc());
-		return resut ;
+		return resut;
 	}
+
 	@GetMapping("/getAll")
 	public List<ToaThuoc> getAll() {
 		System.out.println((List<ToaThuoc>) toaThuocService.findAll());
 		return (List<ToaThuoc>) toaThuocService.findAll();
 	}
-	@PostMapping(path="/addOne" ,consumes = "application/json", produces = "application/json")
-	public Object addOne(@RequestHeader("tokenAC") String token,@RequestBody ToaThuoc toaThuoc) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-		
+
+	@PostMapping(path = "/addOne", consumes = "application/json", produces = "application/json")
+	public Object addOne(@RequestHeader("tokenAC") String token, @RequestBody ToaThuoc toaThuoc)
+			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);
 		Map<String, Integer> map = new HashMap<String, Integer>();
-		if(result) {
-			System.out.println("toa Thuoc: "+ toaThuoc);			
+		if (result) {
+			System.out.println("toa Thuoc: " + toaThuoc);
 			Date ngay = new Date();
 			toaThuoc.setNgay_ke_toa(ngay);
-			toaThuoc=toaThuocService.saveOne(toaThuoc);
-			return toaThuoc ;
+			toaThuoc = toaThuocService.saveOne(toaThuoc);
+			return toaThuoc;
 		}
 		map.put("statusCode", 404);
 		return map;
-		
+
 	}
-	@GetMapping(path="/getAllByIdLichHen")
-	public ToaThuoc getAllByIdLichHen(@RequestParam int id) {
-		ToaThuoc toaThuoc = toaThuocService.findAllByIdToa(id);
-		return toaThuoc;
+
+	// tạo ra 1 object về don thuoc gom co info user , info phong khám , toa thuoc ,
+	// chi tiet thuoc.
+	@GetMapping(path = "/detailDonThuoc")
+	public Object getDetailDonThuoc(@RequestHeader("tokenAC") String token, @RequestParam int idToaThuoc)
+			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException {
+
+		boolean result = authenticationService.xacThucUser(token);
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (result) {
+			// get info phong kham
+			InfoPhongKham infoPhongKham = infoPhongKhamService.getOne();
+			map.put("infoPhongKham", infoPhongKham);
+			// getOne toa thuoc by id
+			ToaThuoc toaThuoc = toaThuocService.getOne(idToaThuoc);
+			map.put("infoToaThuoc", toaThuoc);
+			// get info benh nhan
+			BenhNhan benhNhan = benhNhanService.getOne(toaThuoc.getId_benh_nhan());
+			map.put("infoBenhNhan", benhNhan);
+			// get list thuoc trong toa
+			List<ChiTietToaThuoc> listThuocs = chiTietToaThuocService.getListByToaThuoc(idToaThuoc);
+			map.put("listThuoc", listThuocs);
+			return map;
+		}
+		map.put("statusCode", 404);
+		return map;
 	}
-	@GetMapping(path="/getAllByIdBenhNhan")
-	public Object getAllByIdBenhNhan(@RequestParam int id) {
-		ToaThuoc toaThuoc = toaThuocService.findAllByIdToa(id);
-		return toaThuoc;
-	}
-	
+
 }
