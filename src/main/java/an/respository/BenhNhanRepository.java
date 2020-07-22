@@ -22,7 +22,9 @@ public interface BenhNhanRepository extends JpaRepository<BenhNhan, Integer>{
 	@Query(value = "SELECT * FROM `benh_nhan` WHERE id = :keysearch UNION SELECT * FROM `benh_nhan` WHERE full_name like :keysearch ", 
 			  nativeQuery = true)
 	List<BenhNhan> timKiemTuongDoi(@Param("keysearch") String keysearch);
-	
+	//get one bn
+	@Query(value = "SELECT * FROM Benh_nhan Where id = ?1", nativeQuery = true)
+	BenhNhan getOneBenhNhan(int id);
 	
 	//lazy load danh sach bênh nhân 
 }

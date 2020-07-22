@@ -1,6 +1,9 @@
 package an.service;
 
 import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,6 @@ public class BenhNhanService {
 		return benhNhanRepository.timKiemTuongDoi(keysearch);
 	}
 	public BenhNhan getOne(int id) {
-		return benhNhanRepository.getOne(id);
+		return benhNhanRepository.getOneBenhNhan(id);
 	}
 }

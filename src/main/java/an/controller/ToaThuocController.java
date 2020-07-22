@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -110,7 +111,7 @@ public class ToaThuocController {
 			ToaThuoc toaThuoc = toaThuocService.getOne(idToaThuoc);
 			map.put("infoToaThuoc", toaThuoc);
 			// get info benh nhan
-			BenhNhan benhNhan = benhNhanService.getOne(toaThuoc.getId_benh_nhan());
+			BenhNhan benhNhan = benhNhanService.getOne((toaThuoc.getId_benh_nhan()));
 			map.put("infoBenhNhan", benhNhan);
 			// get list thuoc trong toa
 			List<ChiTietToaThuoc> listThuocs = chiTietToaThuocService.getListByToaThuoc(idToaThuoc);
@@ -127,14 +128,37 @@ public class ToaThuocController {
 
 		boolean result = authenticationService.xacThucUser(token);
 		Map<String, Object> map = new HashMap<String, Object>();
-		ArrayList<Object> list = new ArrayList<>(); 
+		ArrayList<Object> list = new ArrayList<>();
 		if (result) {
 			// Get List Toa Thuoc By All chưa có phân trang
 			List<ToaThuoc> listObjectToaThuoc = (List<ToaThuoc>) toaThuocService.findAll();
-			if (list != null) {
-				list.forEach(items->{
+			if (listObjectToaThuoc != null) {
+				listObjectToaThuoc.forEach(item -> {
+					// get user of toa thuoc
+					BenhNhan benhNhan = benhNhanService.getOne(item.getId_benh_nhan());
+					if(benhNhan==null) {
+						benhNhan= new BenhNhan();
+						benhNhan.setFull_name("Khong Tim Thay");
+					}
 					Map<String, Object> itemToaThuoc = new HashMap<String, Object>();
+					String sex = "NAM";
+					if (benhNhan.getSex() == 1) {
+						sex = "Nam";
+					} else if (benhNhan.getSex() == 1) {
+						sex = "Nữ";
+					} else {
+						sex = "khác";
+					}
+					itemToaThuoc.put("maThuoc", item.getId());
+					itemToaThuoc.put("tenBN", benhNhan.getFull_name());
+					itemToaThuoc.put("sex", sex);
+					itemToaThuoc.put("namSinh", benhNhan.getBirth_date());
+					itemToaThuoc.put("chuanDoanBenh", item.getChuan_doan());
+					itemToaThuoc.put("danDo", item.getDan_do());
+					itemToaThuoc.put("ngayKeToa", item.getNgay_ke_toa());
+					list.add(itemToaThuoc);
 				});
+				return list;
 			} else {
 				map.put("statusCode", 404);
 				return map;
