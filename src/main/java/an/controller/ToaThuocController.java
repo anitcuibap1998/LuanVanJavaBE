@@ -2,6 +2,7 @@ package an.controller;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -120,4 +121,26 @@ public class ToaThuocController {
 		return map;
 	}
 
+	@GetMapping(path = "/lichSuKhamAll")
+	public Object lichSuKhamAll(@RequestHeader("tokenAC") String token) throws InvalidKeyException,
+			NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+
+		boolean result = authenticationService.xacThucUser(token);
+		Map<String, Object> map = new HashMap<String, Object>();
+		ArrayList<Object> list = new ArrayList<>(); 
+		if (result) {
+			// Get List Toa Thuoc By All chưa có phân trang
+			List<ToaThuoc> listObjectToaThuoc = (List<ToaThuoc>) toaThuocService.findAll();
+			if (list != null) {
+				list.forEach(items->{
+					Map<String, Object> itemToaThuoc = new HashMap<String, Object>();
+				});
+			} else {
+				map.put("statusCode", 404);
+				return map;
+			}
+		}
+		map.put("statusCode", 404);
+		return map;
+	}
 }
