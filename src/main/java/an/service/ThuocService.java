@@ -22,16 +22,9 @@ public class ThuocService {
 	public Thuoc save(Thuoc thuoc) {
 		return thuocRepository.save(thuoc);
 	}
+
 	public Thuoc getOneByIdThuoc(int id) {
-		Thuoc thuoc3 = new Thuoc();
-		List<Thuoc> list =  (List<Thuoc>) thuocRepository.findAll();
-		for(Thuoc thuoc: list) {
-			if(thuoc.getId_thuoc()==id)
-			{
-				return thuoc;
-			}
-		}
-		return thuoc3;
+		return thuocRepository.getThuocById(id);
 	}
 	//get list thuoc by name
 	public List<Thuoc> getListThuocByName(String name){

@@ -18,7 +18,7 @@ public class ToaThuocService {
 		return toaThuocRepository.save(toathuoc);
 	}
 	public ToaThuoc getOne(int id) {
-		return toaThuocRepository.getOne(id);
+		return toaThuocRepository.getToaThuocById(id);
 	}
 
 }

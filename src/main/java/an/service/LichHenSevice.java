@@ -31,15 +31,8 @@ public class LichHenSevice {
 	public LichHen  save(LichHen lichhen) {
 		return lichHenRepository.save(lichhen);
 	}
-	public LichHen findOneId(int id_lich_hen) {
-		LichHen hen1 = new LichHen(); 
-		List<LichHen> list = (List<LichHen>) lichHenRepository.findAll();
-		for(LichHen hen :list) {
-			if(hen.getId()==id_lich_hen) {
-				return hen;
-			}
-		}
-		return hen1;
+	public LichHen findOneId(int id) {
+		return lichHenRepository.findOneId(id);
 	}
 	public int deleteLichHenById(int idLH) {
 		return lichHenRepository.deleteLichHenById(idLH);
