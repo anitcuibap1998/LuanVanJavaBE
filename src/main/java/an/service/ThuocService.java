@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import an.model.Thuoc;
-import an.model.ToaThuoc;
 import an.respository.ThuocRepository;
 
 @Service

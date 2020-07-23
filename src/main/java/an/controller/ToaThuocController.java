@@ -112,6 +112,10 @@ public class ToaThuocController {
 			map.put("infoToaThuoc", toaThuoc);
 			// get info benh nhan
 			BenhNhan benhNhan = benhNhanService.getOne((toaThuoc.getId_benh_nhan()));
+			if(benhNhan==null) {
+				benhNhan= new BenhNhan();
+				benhNhan.setFull_name("Khong Tim Thay");
+			}
 			map.put("infoBenhNhan", benhNhan);
 			// get list thuoc trong toa
 			List<ChiTietToaThuoc> listThuocs = chiTietToaThuocService.getListByToaThuoc(idToaThuoc);

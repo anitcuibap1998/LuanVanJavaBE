@@ -1,5 +1,7 @@
 package an.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +13,8 @@ public class ToaThuocService {
 	@Autowired
 	ToaThuocRepository toaThuocRepository;
 
-	public Iterable<ToaThuoc> findAll() {
-		return toaThuocRepository.findAll();
+	public List<ToaThuoc> findAll() {
+		return toaThuocRepository.getAllDESC();
 	}
 	public ToaThuoc saveOne(ToaThuoc toathuoc) {
 		return toaThuocRepository.save(toathuoc);
