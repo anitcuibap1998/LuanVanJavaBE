@@ -23,9 +23,15 @@ public class ChiTietToaThuoc implements Serializable{
 	private String cach_dung;
 	private String ham_luong;
 	private String don_vi_tinh;
+	private String ten_thuoc;
 	
 	
-	
+	public String getTen_thuoc() {
+		return ten_thuoc;
+	}
+	public void setTen_thuoc(String ten_thuoc) {
+		this.ten_thuoc = ten_thuoc;
+	}
 	public String getHam_luong() {
 		return ham_luong;
 	}
@@ -72,8 +78,7 @@ public class ChiTietToaThuoc implements Serializable{
 	public String toString() {
 		return "ChiTietToaThuoc [id=" + id + ", id_toa_thuoc=" + id_toa_thuoc + ", id_thuoc=" + id_thuoc
 				+ ", so_luong_thuoc=" + so_luong_thuoc + ", cach_dung=" + cach_dung + ", ham_luong=" + ham_luong
-				+ ", don_vi_tinh=" + don_vi_tinh + "]";
+				+ ", don_vi_tinh=" + don_vi_tinh + ", ten_thuoc=" + ten_thuoc + "]";
 	}
-
 
 }

@@ -115,7 +115,8 @@ public class ToaThuocController {
 			if(benhNhan==null) {
 				benhNhan= new BenhNhan();
 				benhNhan.setFull_name("Khong Tim Thay");
-			}
+			}		
+			
 			map.put("infoBenhNhan", benhNhan);
 			// get list thuoc trong toa
 			List<ChiTietToaThuoc> listThuocs = chiTietToaThuocService.getListByToaThuoc(idToaThuoc);
@@ -145,13 +146,13 @@ public class ToaThuocController {
 						benhNhan.setFull_name("Khong Tim Thay");
 					}
 					Map<String, Object> itemToaThuoc = new HashMap<String, Object>();
-					String sex = "NAM";
+					String sex = "Nam";
 					if (benhNhan.getSex() == 1) {
 						sex = "Nam";
-					} else if (benhNhan.getSex() == 1) {
+					} else if (benhNhan.getSex() == 0) {
 						sex = "Nữ";
 					} else {
-						sex = "khác";
+						sex = "Khác";
 					}
 					itemToaThuoc.put("maThuoc", item.getId());
 					itemToaThuoc.put("tenBN", benhNhan.getFull_name());
