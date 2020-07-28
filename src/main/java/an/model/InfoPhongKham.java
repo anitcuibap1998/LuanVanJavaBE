@@ -14,6 +14,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name="info_hospital")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class InfoPhongKham implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

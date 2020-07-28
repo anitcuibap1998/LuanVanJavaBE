@@ -14,6 +14,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +36,7 @@ import an.service.ChiTietToaThuocService;
 import an.service.InfoPhongKhamService;
 import an.service.ThuocService;
 import an.service.ToaThuocService;
+import dto.ModelToaThuoc;
 import dto.ToaThuocGSON;
 
 @RestController
@@ -53,6 +55,8 @@ public class ToaThuocController {
 	BenhNhanService benhNhanService;
 	@Autowired
 	ChiTietToaThuocService chiTietToaThuocService;
+	@Autowired
+	ChiTietToaThuocService chiTietThuocService;
 
 	@PostMapping(path = "/addOneNull", consumes = "application/json", produces = "application/json")
 	public Object addOne11(@RequestBody Object object) {
@@ -76,22 +80,38 @@ public class ToaThuocController {
 		return (List<ToaThuoc>) toaThuocService.findAll();
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	@PostMapping(path = "/addOne", consumes = "application/json", produces = "application/json")
-	public Object addOne(@RequestHeader("tokenAC") String token, @RequestBody ToaThuoc toaThuoc)
-			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
-			BadPaddingException {
-		boolean result = authenticationService.xacThucUser(token);
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		if (result) {
-			System.out.println("toa Thuoc: " + toaThuoc);
-			Date ngay = new Date();
-			toaThuoc.setNgay_ke_toa(ngay);
-			toaThuoc = toaThuocService.saveOne(toaThuoc);
-			return toaThuoc;
-		}
-		map.put("statusCode", 404);
-		return map;
-
+	public Object addOne(@RequestHeader("tokenAC") String token, @RequestBody ModelToaThuoc modelToaThuoc)
+			throws Exception {
+		
+			System.out.println("modelToaThuoc: "+modelToaThuoc);
+			boolean result = authenticationService.xacThucUser(token);
+			Map<String, Object> map = new HashMap<String, Object>();
+			if (result) {
+				System.out.println("toa Thuoc: " + modelToaThuoc.getClass());
+				Date ngay = new Date();
+				modelToaThuoc.getToaThuoc().setNgay_ke_toa(ngay);
+				ToaThuoc toaThuoc = modelToaThuoc.getToaThuoc(); 
+				toaThuoc = toaThuocService.saveOne(toaThuoc);
+				//thêm chi tiết thuốc vào
+				if(toaThuoc!= null) {
+					List<ChiTietToaThuoc> ChiTietToaThuocs = modelToaThuoc.getListChiTietToaThuoc();
+					for(ChiTietToaThuoc oneChiTietToaThuoc : ChiTietToaThuocs) {
+						oneChiTietToaThuoc.setId_toa_thuoc(toaThuoc.getId());
+						ChiTietToaThuoc chiTietToaThuoc = new ChiTietToaThuoc();
+						chiTietToaThuoc = chiTietThuocService.save(oneChiTietToaThuoc);
+						if(chiTietToaThuoc==null) {
+							throw new Exception();
+						}
+					}
+					map.put("toaThuoc",toaThuoc);
+					map.put("chiTietToaThuoc",ChiTietToaThuocs);
+					return map;
+				}
+			}
+			map.put("statusCode", 404);
+			return map;
 	}
 
 	// tạo ra 1 object về don thuoc gom co info user , info phong khám , toa thuoc ,

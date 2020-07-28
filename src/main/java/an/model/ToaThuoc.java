@@ -15,6 +15,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name="toa_thuoc")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ToaThuoc implements Serializable{
+	/**
+	 * 
+	 */
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
