@@ -13,8 +13,8 @@ public interface BenhNhanRepository extends JpaRepository<BenhNhan, Integer>{
 	@Query(value = "SELECT * FROM Benh_nhan  ORDER BY id DESC LIMIT 1", nativeQuery = true)
 	BenhNhan findBenhNhanLasted();
 	
-	@Query(value = "SELECT * FROM Benh_nhan  ORDER BY id DESC", nativeQuery = true)
-	List<BenhNhan> findAllDESC();
+	@Query(value = "SELECT * FROM Benh_nhan  ORDER BY id DESC limit ?1,?2", nativeQuery = true)
+	List<BenhNhan> findAllDESC(int index,int pageSize);
 	//tìm kiếm bệnh nhân theo id
 	// SELECT * FROM `benh_nhan` WHERE id = "phuc" UNION 
 	// SELECT * FROM `benh_nhan` WHERE full_name like "%phuc%" UNION 

@@ -36,15 +36,13 @@ public class BenhNhanController {
 	private AuthenticationService authenticationService;
 
 	@GetMapping("/getAll")
-	public Object getAll(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException,
+	public Object getAll(@RequestHeader("tokenAC") String token,@RequestParam int index,@RequestParam int pageSize) throws InvalidKeyException, NoSuchAlgorithmException,
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		if (result) {
 			System.out.println("object: " + result);
-			System.out.println((List<BenhNhan>) benhNhanService.findAll());
-			return (List<BenhNhan>) benhNhanService.findAll();
-
+			return (List<BenhNhan>) benhNhanService.findAll(index,pageSize);
 		}
 		map.put("statusCode", 404);
 		return map;
