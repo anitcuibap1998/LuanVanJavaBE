@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -24,8 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
-
+import an.dto.ModelToaThuoc;
 import an.model.BenhNhan;
 import an.model.ChiTietToaThuoc;
 import an.model.InfoPhongKham;
@@ -36,8 +34,6 @@ import an.service.ChiTietToaThuocService;
 import an.service.InfoPhongKhamService;
 import an.service.ThuocService;
 import an.service.ToaThuocService;
-import dto.ModelToaThuoc;
-import dto.ToaThuocGSON;
 
 @RestController
 @CrossOrigin(origins = "http://127.0.0.1:5500")
@@ -58,21 +54,6 @@ public class ToaThuocController {
 	@Autowired
 	ChiTietToaThuocService chiTietThuocService;
 
-	@PostMapping(path = "/addOneNull", consumes = "application/json", produces = "application/json")
-	public Object addOne11(@RequestBody Object object) {
-		System.out.println(object);
-		System.out.println((object.getClass().getName()));
-		System.out.println(object.getClass());
-		System.out.println((object.getClass().getName()));
-
-		Gson gson = new Gson();
-		String jsonInString = object.toString();
-		System.out.println(jsonInString);
-		ToaThuocGSON resut = gson.fromJson(jsonInString, ToaThuocGSON.class);
-		System.out.println(resut.getToaThuoc());
-		System.out.println(resut.getListThuoc().get(0).getTenThuoc());
-		return resut;
-	}
 
 	@GetMapping("/getAll")
 	public List<ToaThuoc> getAll() {

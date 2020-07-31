@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import an.dto.ToaThuocDTO;
 import an.model.LichHen;
 import an.model.ToaThuoc;
 import an.service.LichHenSevice;
 import an.service.ToaThuocService;
-import dto.ToaThuocDTO;
 
 @RestController
 @CrossOrigin(origins = "http://127.0.0.1:5500")

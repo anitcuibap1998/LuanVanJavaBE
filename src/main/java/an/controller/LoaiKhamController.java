@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import an.model.BenhNhan;
 import an.model.LoaiKham;
 import an.service.AuthenticationService;
 import an.service.LoaiKhamService;

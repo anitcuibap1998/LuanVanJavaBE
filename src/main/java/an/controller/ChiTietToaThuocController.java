@@ -2,7 +2,6 @@ package an.controller;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,18 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import an.model.ChiTietToaThuoc;
-import an.model.Thuoc;
-import an.model.ToaThuoc;
 import an.service.AuthenticationService;
 import an.service.ChiTietToaThuocService;
 import an.service.ThuocService;
 import an.service.ToaThuocService;
-import dto.OneToa;
-import dto.OneToa2;
 
 @RestController
 @CrossOrigin(origins = "http://127.0.0.1:5500")
@@ -57,7 +51,6 @@ public class ChiTietToaThuocController {
 		}
 		map.put("statusCode", 404);
 		return map;
-		
 	}
 	@GetMapping(path="/getAll")
 	public List<ChiTietToaThuoc> getAll() {
