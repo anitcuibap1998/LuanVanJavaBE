@@ -57,7 +57,4 @@ public class ChiTietToaThuocController {
 		return (List<ChiTietToaThuoc>) chiTietThuocService.findAll();
 	}
 	
-	
-
-	
 }

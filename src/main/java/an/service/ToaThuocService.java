@@ -22,5 +22,11 @@ public class ToaThuocService {
 	public ToaThuoc getOne(int id) {
 		return toaThuocRepository.getToaThuocById(id);
 	}
+	public List<ToaThuoc> getListByIdBenhNhan(int idBenhNhan){
+		return toaThuocRepository.getListByIdBenhNhan(idBenhNhan);
+	}
+	public ToaThuoc getListByIdToaThuoc(int idToaThuoc){
+		return toaThuocRepository.getOneByIdToaThuoc(idToaThuoc);
+	}
 
 }
