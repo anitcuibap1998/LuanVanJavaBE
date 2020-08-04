@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -92,6 +93,41 @@ public class ToaThuocController {
 		}
 		map.put("statusCode", 404);
 		return map;
+	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	@PutMapping(path = "/updateOne", consumes = "application/json", produces = "application/json")
+	public Object updateOne(@RequestHeader("tokenAC") String token,@RequestParam int idToaThuoc, @RequestBody ModelToaThuoc modelToaThuoc)
+			throws Exception {
+
+//		System.out.println("modelToaThuoc: " + modelToaThuoc);
+//		boolean result = authenticationService.xacThucUser(token);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		if (result) {
+//			System.out.println("toa Thuoc: " + modelToaThuoc.getClass());
+//			Date ngay = new Date();
+//			modelToaThuoc.getToaThuoc().setUpdate_date(ngay);
+//			modelToaThuoc.getToaThuoc().setStatus_edit(1);
+//			ToaThuoc toaThuoc = modelToaThuoc.getToaThuoc();
+//			toaThuoc = toaThuocService.saveOne(toaThuoc);
+//			// thêm chi tiết thuốc vào
+//			if (toaThuoc != null) {
+//				List<ChiTietToaThuoc> ChiTietToaThuocs = modelToaThuoc.getListChiTietToaThuoc();
+//				for (ChiTietToaThuoc oneChiTietToaThuoc : ChiTietToaThuocs) {
+//					oneChiTietToaThuoc.setId_toa_thuoc(toaThuoc.getId());
+//					ChiTietToaThuoc chiTietToaThuoc = new ChiTietToaThuoc();
+//					chiTietToaThuoc = chiTietThuocService.save(oneChiTietToaThuoc);
+//					if (chiTietToaThuoc == null) {
+//						throw new Exception();
+//					}
+//				}
+//				map.put("toaThuoc", toaThuoc);
+//				map.put("chiTietToaThuoc", ChiTietToaThuocs);
+//				return map;
+//			}
+//		}
+//		map.put("statusCode", 404);
+		return modelToaThuoc;
 	}
 
 	// tạo ra 1 object về don thuoc gom co info user , info phong khám , toa thuoc ,

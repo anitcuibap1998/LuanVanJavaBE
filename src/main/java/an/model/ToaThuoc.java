@@ -24,13 +24,27 @@ public class ToaThuoc implements Serializable{
 	private int id;
 	private int id_benh_nhan;
 	private Date ngay_ke_toa;
+	private Date update_date;
 	private	int id_bac_si;
 	private String chuan_doan;
 	private String dan_do;
 	private int id_gia_kham;
 	private int id_lich_hen;
+	private int status_edit;
 	
 	
+	public int getStatus_edit() {
+		return status_edit;
+	}
+	public void setStatus_edit(int status_edit) {
+		this.status_edit = status_edit;
+	}
+	public Date getUpdate_date() {
+		return update_date;
+	}
+	public void setUpdate_date(Date update_date) {
+		this.update_date = update_date;
+	}
 	public int getId_lich_hen() {
 		return id_lich_hen;
 	}
@@ -84,9 +98,7 @@ public class ToaThuoc implements Serializable{
 	public String toString() {
 		return "ToaThuoc [id=" + id + ", id_benh_nhan=" + id_benh_nhan + ", ngay_ke_toa=" + ngay_ke_toa + ", id_bac_si="
 				+ id_bac_si + ", chuan_doan=" + chuan_doan + ", dan_do=" + dan_do + ", id_gia_kham=" + id_gia_kham
-				+ ", id_lich_hen=" + id_lich_hen + "]";
+				+ ", id_lich_hen=" + id_lich_hen + ", status_edit=" + status_edit + ", update_date=" + update_date
+				+ "]";
 	}
-	
-	
-	
 }
