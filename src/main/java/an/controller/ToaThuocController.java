@@ -100,34 +100,39 @@ public class ToaThuocController {
 	public Object updateOne(@RequestHeader("tokenAC") String token,@RequestParam int idToaThuoc, @RequestBody ModelToaThuoc modelToaThuoc)
 			throws Exception {
 
-//		System.out.println("modelToaThuoc: " + modelToaThuoc);
-//		boolean result = authenticationService.xacThucUser(token);
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		if (result) {
-//			System.out.println("toa Thuoc: " + modelToaThuoc.getClass());
-//			Date ngay = new Date();
-//			modelToaThuoc.getToaThuoc().setUpdate_date(ngay);
-//			modelToaThuoc.getToaThuoc().setStatus_edit(1);
-//			ToaThuoc toaThuoc = modelToaThuoc.getToaThuoc();
-//			toaThuoc = toaThuocService.saveOne(toaThuoc);
-//			// thêm chi tiết thuốc vào
-//			if (toaThuoc != null) {
-//				List<ChiTietToaThuoc> ChiTietToaThuocs = modelToaThuoc.getListChiTietToaThuoc();
-//				for (ChiTietToaThuoc oneChiTietToaThuoc : ChiTietToaThuocs) {
-//					oneChiTietToaThuoc.setId_toa_thuoc(toaThuoc.getId());
-//					ChiTietToaThuoc chiTietToaThuoc = new ChiTietToaThuoc();
-//					chiTietToaThuoc = chiTietThuocService.save(oneChiTietToaThuoc);
-//					if (chiTietToaThuoc == null) {
-//						throw new Exception();
-//					}
-//				}
-//				map.put("toaThuoc", toaThuoc);
-//				map.put("chiTietToaThuoc", ChiTietToaThuocs);
-//				return map;
-//			}
-//		}
-//		map.put("statusCode", 404);
-		return modelToaThuoc;
+		System.out.println("modelToaThuoc: " + modelToaThuoc);
+		boolean result = authenticationService.xacThucUser(token);
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (result) {
+			System.out.println("toa Thuoc: " + modelToaThuoc.getClass());
+			Date ngay = new Date();
+			modelToaThuoc.getToaThuoc().setUpdate_date(ngay);
+			modelToaThuoc.getToaThuoc().setStatus_edit(1);
+			ToaThuoc toaThuoc = modelToaThuoc.getToaThuoc();
+			
+			toaThuoc = toaThuocService.saveOne(toaThuoc);
+			// thêm chi tiết thuốc vào
+			if (toaThuoc != null) {
+				int rows = chiTietThuocService.deleteByIdToaThuoc(toaThuoc.getId());
+				System.out.println("))))(((((("+rows);
+				if(rows<=0) {
+					throw new Exception();
+				}
+				List<ChiTietToaThuoc> ChiTietToaThuocs = modelToaThuoc.getListChiTietToaThuoc();
+				for (ChiTietToaThuoc oneChiTietToaThuoc : ChiTietToaThuocs) {
+					oneChiTietToaThuoc.setId_toa_thuoc(toaThuoc.getId());
+					ChiTietToaThuoc chiTietToaThuoc = new ChiTietToaThuoc();
+					chiTietToaThuoc = chiTietThuocService.save(oneChiTietToaThuoc);
+					if (chiTietToaThuoc == null) {
+						throw new Exception();
+					}
+				}
+				map.put("toaThuoc", toaThuoc);
+				map.put("chiTietToaThuoc", ChiTietToaThuocs);
+				return map;
+			}
+		}
+		return map.put("statusCode", 403);
 	}
 
 	// tạo ra 1 object về don thuoc gom co info user , info phong khám , toa thuoc ,

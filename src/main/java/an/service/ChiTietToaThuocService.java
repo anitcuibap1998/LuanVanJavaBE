@@ -23,4 +23,7 @@ public class ChiTietToaThuocService {
 	public List<ChiTietToaThuoc> getListByToaThuoc(int id) {
 		return chiTietToaThuocRepository.getListThuocByIdToa(id);
 	}
+	public int deleteByIdToaThuoc(int idToaThuoc) {
+		return chiTietToaThuocRepository.deleteByIdToaThuoc(idToaThuoc);
+	}
 }
