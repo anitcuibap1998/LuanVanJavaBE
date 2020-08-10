@@ -28,7 +28,9 @@ import an.dto.ModelToaThuoc;
 import an.model.BenhNhan;
 import an.model.ChiTietToaThuoc;
 import an.model.InfoPhongKham;
+import an.model.LoaiKham;
 import an.model.ToaThuoc;
+import an.respository.LoaiKhamRepository;
 import an.service.AuthenticationService;
 import an.service.BenhNhanService;
 import an.service.ChiTietToaThuocService;
@@ -37,7 +39,7 @@ import an.service.ThuocService;
 import an.service.ToaThuocService;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*")
 @RequestMapping("/toa_thuoc")
 public class ToaThuocController {
 	@Autowired
@@ -54,7 +56,8 @@ public class ToaThuocController {
 	ChiTietToaThuocService chiTietToaThuocService;
 	@Autowired
 	ChiTietToaThuocService chiTietThuocService;
-
+	@Autowired
+	LoaiKhamRepository loaiKhamRepository;
 	@GetMapping("/getAll")
 	public List<ToaThuoc> getAll() {
 		System.out.println((List<ToaThuoc>) toaThuocService.findAll());
@@ -151,6 +154,8 @@ public class ToaThuocController {
 			// getOne toa thuoc by id
 			ToaThuoc toaThuoc = toaThuocService.getOne(idToaThuoc);
 			map.put("infoToaThuoc", toaThuoc);
+			LoaiKham loaiKham = loaiKhamRepository.findLoaiKhamById(toaThuoc.getId_gia_kham());
+			map.put("infoLoaiKhamBenh", loaiKham);
 			// get info benh nhan
 			BenhNhan benhNhan = benhNhanService.getOne((toaThuoc.getId_benh_nhan()));
 			if (benhNhan == null) {
@@ -296,7 +301,6 @@ public class ToaThuocController {
 				itemToaThuoc.put("danDo", ObjectToaThuoc.getDan_do());
 				itemToaThuoc.put("ngayKeToa", ObjectToaThuoc.getNgay_ke_toa());
 				list.add(itemToaThuoc);
-
 				return list;
 			} else {
 				map.put("statusCode", 404);

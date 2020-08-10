@@ -25,7 +25,7 @@ import an.service.AuthenticationService;
 import an.service.LichHenSevice;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*")
 @RequestMapping("/lich_hen")
 public class LichHenController {
 	@Autowired

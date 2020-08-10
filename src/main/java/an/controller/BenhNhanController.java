@@ -25,7 +25,7 @@ import an.service.AuthenticationService;
 import an.service.BenhNhanService;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*")
 @RequestMapping("/benh_nhan")
 public class BenhNhanController {
 
@@ -73,11 +73,18 @@ public class BenhNhanController {
 			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
 			BadPaddingException {
 		boolean result = authenticationService.xacThucUser(token);
+		Map<String, Object> map = new HashMap<String, Object>();
 		System.out.println("object: " + result);
 		if (result) {
+			BenhNhan benhNhanCheck = benhNhanService.getOnePhone(benhnhan.getPhone());
+			if(benhNhanCheck!=null) {
+				map.put("statusCode", 999);
+				map.put("message", "Số Điện Thoại Đã Tồn Tại");
+				return map;
+			}
 			return benhNhanService.save(benhnhan);
 		}
-		Map<String, Integer> map = new HashMap<String, Integer>();
+		
 		map.put("statusCode", 404);
 		return map;
 	}

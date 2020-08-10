@@ -26,5 +26,7 @@ public interface BenhNhanRepository extends JpaRepository<BenhNhan, Integer>{
 	@Query(value = "SELECT * FROM Benh_nhan Where id = ?1 ORDER BY id DESC", nativeQuery = true)
 	BenhNhan getOneBenhNhan(int id);
 	
+	@Query(value = "SELECT * FROM Benh_nhan Where phone = ?1 ORDER BY id DESC limit 0,1", nativeQuery = true)
+	BenhNhan getOneBenhNhanByPhone(int phone);
 	//lazy load danh sach bênh nhân 
 }

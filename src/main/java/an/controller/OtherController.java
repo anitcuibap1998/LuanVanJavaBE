@@ -17,7 +17,7 @@ import an.service.LichHenSevice;
 import an.service.ToaThuocService;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*")
 @RequestMapping("/lich_su")
 public class OtherController {
 	@Autowired

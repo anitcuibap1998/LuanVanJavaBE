@@ -25,7 +25,7 @@ import an.service.AuthenticationService;
 import an.service.ThuocService;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*")
 @RequestMapping("/thuoc")
 public class ThuocController {
 	@Autowired

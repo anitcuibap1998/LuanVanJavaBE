@@ -26,7 +26,7 @@ import an.service.ThuocService;
 import an.service.ToaThuocService;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*")
 @RequestMapping("/chi_tiet_toa_thuoc")
 public class ChiTietToaThuocController {
 	@Autowired

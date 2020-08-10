@@ -34,4 +34,7 @@ public class BenhNhanService {
 	public BenhNhan getOne(int id) {
 		return benhNhanRepository.getOneBenhNhan(id);
 	}
+	public BenhNhan getOnePhone(int phone) {
+		return benhNhanRepository.getOneBenhNhanByPhone(phone);
+	}
 }

@@ -17,4 +17,7 @@ public class LoaiKhamService {
 	public LoaiKham save(LoaiKham kham) {
 		return khamRepository.save(kham);
 	}
+	public LoaiKham getOneById(int id) {
+		return khamRepository.findLoaiKhamById(id);
+	}
 }
