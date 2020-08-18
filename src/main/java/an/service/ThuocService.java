@@ -28,5 +28,10 @@ public class ThuocService {
 	//get list thuoc by name
 	public List<Thuoc> getListThuocByName(String name){
 		return thuocRepository.findAllThuocByName(name);
-	} 
+	}
+	//get all list thuoc lazy load 
+	public List<Thuoc> getListThuocLazyLoad(int index,int pageSize){
+		int offset = index * pageSize;
+		return thuocRepository.getListThuocLazyLoad(offset, pageSize);
+	}
 }

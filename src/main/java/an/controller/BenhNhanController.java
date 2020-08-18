@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import an.model.BenhNhan;
 import an.service.AuthenticationService;
 import an.service.BenhNhanService;
+import an.util.JavaEmailSender;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -77,15 +78,24 @@ public class BenhNhanController {
 		System.out.println("object: " + result);
 		if (result) {
 			BenhNhan benhNhanCheck = benhNhanService.getOnePhone(benhnhan.getPhone());
+			
 			if(benhNhanCheck!=null) {
 				map.put("statusCode", 999);
 				map.put("message", "Số Điện Thoại Đã Tồn Tại");
 				return map;
 			}
-			return benhNhanService.save(benhnhan);
+			benhNhanCheck = benhNhanService.getOneMail(benhnhan.getMail());
+			if(benhNhanCheck!=null) {
+				map.put("statusCode", 999);
+				map.put("message", "Email Đã Tồn Tại");
+				return map;
+			}
+			BenhNhan bn = benhNhanService.save(benhnhan);
+			JavaEmailSender.sendMailUtil(bn.getMail(), "Phòng Khám Xin Thông Báo", "Tạo Thành Công Bệnh Nhân Với Thông Tin Bạn Công Cấp, Mã Bệnh Nhân Của Bạn Là: "+bn.getId());
+			return bn;
 		}
-		
 		map.put("statusCode", 404);
+		map.put("message", "Bạn Không Có Đủ Quyền Để Thực Hiện Thao Tác Này !!!");
 		return map;
 	}
 

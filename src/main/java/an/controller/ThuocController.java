@@ -32,34 +32,37 @@ public class ThuocController {
 	private ThuocService thuocService;
 	@Autowired
 	private AuthenticationService authenticationService;
-	
+
 	@GetMapping("/getAll")
 	public List<Thuoc> getAll() {
 		System.out.println((List<Thuoc>) thuocService.findAll());
 		return (List<Thuoc>) thuocService.findAll();
 	}
-	
-	@PostMapping(path="/addOne" ,consumes = "application/json", produces = "application/json")
+
+	@PostMapping(path = "/addOne", consumes = "application/json", produces = "application/json")
 	public Thuoc addOne(@RequestBody Thuoc thuoc) {
 		Thuoc thuoc2 = new Thuoc();
-		
+
 		thuoc2 = thuocService.save(thuoc);
-		return thuoc2 ;
+		return thuoc2;
 	}
-	//get List thuoc theo ten
+
+	// get List thuoc theo ten
 	@GetMapping("/getListByName")
-	public Object getListByName(@RequestHeader("tokenAc") String token, @RequestParam String name) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	public Object getListByName(@RequestHeader("tokenAc") String token, @RequestParam String name)
+			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		boolean result = authenticationService.xacThucUser(token);
-		if(name.isEmpty()) {
+		if (name.isEmpty()) {
 			map.put("statusCode", 1000);
 			return map;
 		}
-		if(result) {
-			System.out.println("object: "+result);
-			//System.out.println((List<Thuoc>) thuocService.getListThuocByName(name);
+		if (result) {
+			System.out.println("object: " + result);
+			// System.out.println((List<Thuoc>) thuocService.getListThuocByName(name);
 			List<Thuoc> listThuoc = (List<Thuoc>) thuocService.getListThuocByName(name);
-			if(listThuoc.isEmpty()) {
+			if (listThuoc.isEmpty()) {
 				map.put("statusCode", 1000);
 				return map;
 			}
@@ -68,4 +71,27 @@ public class ThuocController {
 		map.put("statusCode", 404);
 		return map;
 	}
+
+	// get List thuoc all lazy load
+	@GetMapping("/getListThuocLazyLoad")
+	public Object getListThuocLazyLoad(@RequestHeader("tokenAc") String token, @RequestParam int index,
+			@RequestParam int pageSize) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+			IllegalBlockSizeException, BadPaddingException {
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean result = authenticationService.xacThucUser(token);
+		if (result) {
+			System.out.println("Role: " + result);
+			List<Thuoc> listThuoc = (List<Thuoc>) thuocService.getListThuocLazyLoad(index, pageSize);
+			if (listThuoc.isEmpty()) {
+				map.put("statusCode", 1000);
+				map.put("message", "Không Còn Gì Để Load Nữa");
+				return map;
+			}
+			return listThuoc;
+		}
+		map.put("statusCode", 403);
+		map.put("message", "Bạn Không Có Đủ Quyền Để Thực Hiện Hành Động Này");
+		return map;
+	}
+
 }

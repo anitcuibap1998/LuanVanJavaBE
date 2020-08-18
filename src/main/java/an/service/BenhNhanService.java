@@ -37,4 +37,7 @@ public class BenhNhanService {
 	public BenhNhan getOnePhone(int phone) {
 		return benhNhanRepository.getOneBenhNhanByPhone(phone);
 	}
+	public BenhNhan getOneMail(String mail) {
+		return benhNhanRepository.getOneBenhNhanByMail(mail);
+	}
 }

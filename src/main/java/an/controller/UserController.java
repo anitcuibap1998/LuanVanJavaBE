@@ -42,8 +42,9 @@ public class UserController {
 		if(result) {
 			return userService.getOneUserByName(token);
 		}
-		Map<String, Integer> map = new HashMap<String, Integer>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("statusCode", 404);
+		map.put("messgn", "Bạn Không Có Đủ Quyền Để Thực Thi Thao Tác Này !!!");
 		return map;
 		
 //		return (List<User>) userService.findAll();
