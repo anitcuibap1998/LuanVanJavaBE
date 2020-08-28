@@ -118,9 +118,9 @@ public class ToaThuocController {
 			if (toaThuoc != null) {
 				int rows = chiTietThuocService.deleteByIdToaThuoc(toaThuoc.getId());
 				System.out.println("))))(((((("+rows);
-				if(rows<=0) {
-					throw new Exception();
-				}
+//				if(rows<=0) {
+//					throw new Exception();
+//				}
 				List<ChiTietToaThuoc> ChiTietToaThuocs = modelToaThuoc.getListChiTietToaThuoc();
 				for (ChiTietToaThuoc oneChiTietToaThuoc : ChiTietToaThuocs) {
 					oneChiTietToaThuoc.setId_toa_thuoc(toaThuoc.getId());

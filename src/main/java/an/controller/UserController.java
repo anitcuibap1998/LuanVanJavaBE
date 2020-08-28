@@ -34,7 +34,7 @@ public class UserController {
 	private AuthenticationService authenticationService;
 
 	@GetMapping("/getOne")
-	public Object getAll(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException,
+	public Object getOne(@RequestHeader("tokenAC") String token) throws InvalidKeyException, NoSuchAlgorithmException,
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		//gọi hàm xác thực authentication
 		boolean result = authenticationService.xacThucUser(token);
@@ -55,7 +55,7 @@ public class UserController {
 		//khởi tạo biến kiểm soát logic
 		boolean flag = true;
 		Map<String, Object> mapResult = new HashMap<>(); 
-		//sử lý code logic 
+		//Xử lý code logic 
 		User getuser = userService.getOneUser(user.getUsername(), MD5.getMd5(user.getPass()));
 		System.out.println("---> " + getuser);
 		if (getuser != null) {
